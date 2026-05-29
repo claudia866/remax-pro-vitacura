@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RE/MAX PRO Vitacura — Propiedades exclusivas en Vitacura. Casas, departamentos, oficinas y terrenos. Red global, servicio local.">
+<title>RE/MAX PRO Vitacura — Propiedades Exclusivas</title>
+
+<!-- Meta Pixel Placeholder -->
+<script>!function(f,b,e,v,n,t,s){/* META_PIXEL_ID_HERE */}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');</script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- Lenis smooth scroll -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<style>
+:root {
+  --red: #DC1A2C;
+  --red-dark: #a8121f;
+  --navy: #003DA5;
+  --gold: #C9A96E;
+  --gold-light: #e0c898;
+  --black: #0A0A0A;
+  --dark: #111118;
+  --dark-2: #1a1a24;
+  --dark-3: #22222e;
+  --white: #FFFFFF;
+  --white-60: rgba(255,255,255,0.6);
+  --white-10: rgba(255,255,255,0.08);
+  --white-5: rgba(255,255,255,0.04);
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: auto; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--red);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), background 0.3s;
+  mix-blend-mode: normal;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(201,169,110,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.5s var(--ease-out), height 0.5s var(--ease-out), border-color 0.3s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width: 56px; height: 56px; border-color: var(--gold); }
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { background: var(--gold); }
+@media (pointer: coarse) { #cursor, #cursor-ring { display: none; } body { cursor: auto; } }
+
+/* ── SCROLL PROGRESS ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+  z-index: 9997; width: 0%; transition: width 0.1s linear;
+}
+
+/* ── LOADER ── */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--black);
+  z-index: 9990;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px;
+}
+.loader-logo {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.loader-logo img { height: 64px; filter: brightness(0) invert(1); }
+.loader-percent {
+  font-family: var(--font-bebas);
+  font-size: clamp(80px, 15vw, 160px);
+  color: var(--white);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+.loader-line {
+  width: 200px; height: 1px;
+  background: var(--dark-3);
+  position: relative; overflow: hidden;
+}
+.loader-line-fill {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+  width: 0%;
+  transition: width 0.05s linear;
+}
+.loader-label {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--white-60);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(20px);
+  padding: 14px 48px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.nav-logo img { height: 40px; }
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  color: var(--white-60);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--red);
+  color: var(--white) !important;
+  padding: 10px 24px !important;
+  border-radius: 4px;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--red-dark) !important; color: var(--white) !important; }
+.nav-hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none;
+  cursor: pointer; padding: 8px;
+}
+.nav-hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--white); transition: 0.3s;
+}
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  nav.scrolled { padding: 12px 24px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative; height: 100dvh; min-height: 600px;
+  display: flex; align-items: center; justify-content: flex-start;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 60%, rgba(0,61,165,0.15) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 clamp(24px, 6vw, 96px);
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white-10);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px; border-radius: 100px;
+  font-size: 12px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+  opacity: 0; transform: translateY(20px);
+}
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--red); border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 8vw, 120px);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.hero-title .line { display: block; overflow: hidden; }
+.hero-title .line span {
+  display: block;
+  transform: translateY(110%);
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+.hero-subtitle {
+  font-size: clamp(16px, 2vw, 22px);
+  color: var(--white-60);
+  font-weight: 300;
+  max-width: 520px;
+  margin-bottom: 48px;
+  opacity: 0; transform: translateY(20px);
+}
+.hero-actions {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  opacity: 0; transform: translateY(20px);
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--red);
+  color: var(--white);
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 4px;
+  font-size: 15px; font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background 0.2s, transform 0.2s;
+  min-height: 52px;
+  border: none; cursor: pointer; font-family: var(--font-body);
+}
+.btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent;
+  color: var(--white);
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 4px;
+  font-size: 15px; font-weight: 500;
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  min-height: 52px;
+  backdrop-filter: blur(10px);
+}
+.btn-secondary:hover { border-color: var(--gold); background: rgba(201,169,110,0.08); transform: translateY(-2px); }
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: scroll-fade 1s 3s forwards;
+}
+@keyframes scroll-fade { to { opacity: 0.5; } }
+.hero-scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, var(--white), transparent);
+  animation: scroll-line 2s infinite;
+}
+@keyframes scroll-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.hero-scroll span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--white-60); }
+
+/* ── STATS ── */
+#stats {
+  background: var(--dark);
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0 clamp(24px, 6vw, 96px);
+}
+.stats-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  divide: 1px solid var(--glass-border);
+}
+.stat-item {
+  padding: 40px 32px;
+  border-right: 1px solid var(--glass-border);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--font-bebas);
+  font-size: clamp(40px, 5vw, 72px);
+  color: var(--white);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.stat-num span { color: var(--red); }
+.stat-label {
+  font-size: 13px;
+  color: var(--white-60);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+@media (max-width: 768px) {
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--glass-border); }
+  .stat-item:nth-child(odd) { border-right: 1px solid var(--glass-border); }
+  .stat-item:last-child, .stat-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+}
+
+/* ── SECTION COMMONS ── */
+section { padding: clamp(80px, 10vw, 140px) clamp(24px, 6vw, 96px); }
+.section-eyebrow {
+  font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold);
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.section-eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--gold);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-subtitle {
+  font-size: 17px; color: var(--white-60);
+  max-width: 560px; font-weight: 300;
+  line-height: 1.7;
+}
+.reveal-up { opacity: 0; transform: translateY(40px); }
+
+/* ── PROPERTIES ── */
+#propiedades { background: var(--black); }
+.props-header {
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap; gap: 24px;
+  margin-bottom: 48px;
+}
+.props-filters {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--white-60);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+  min-height: 44px;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+.props-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+.prop-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.prop-card:hover {
+  border-color: rgba(201,169,110,0.3);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,169,110,0.15);
+}
+.prop-img-wrap {
+  position: relative; overflow: hidden;
+  height: 220px;
+}
+.prop-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+.prop-card:hover .prop-img-wrap img { transform: scale(1.06); }
+.prop-badge {
+  position: absolute; top: 16px; left: 16px;
+  padding: 5px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.badge-new { background: var(--red); color: var(--white); }
+.badge-op { background: var(--gold); color: var(--black); }
+.badge-exc { background: var(--navy); color: var(--white); }
+.prop-type-badge {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  padding: 5px 12px; border-radius: 4px;
+  font-size: 11px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--white-60);
+}
+.prop-body { padding: 24px; }
+.prop-price {
+  font-family: var(--font-display);
+  font-size: 32px; font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.prop-price span { font-size: 16px; font-weight: 300; color: var(--white-60); }
+.prop-name {
+  font-size: 16px; font-weight: 500;
+  color: var(--white); margin-bottom: 4px;
+}
+.prop-location {
+  font-size: 13px; color: var(--gold);
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 20px;
+}
+.prop-specs {
+  display: flex; gap: 0;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+.spec {
+  flex: 1; text-align: center;
+  border-right: 1px solid var(--glass-border);
+  padding: 0 8px;
+}
+.spec:last-child { border-right: none; }
+.spec-val {
+  font-size: 18px; font-weight: 600;
+  color: var(--white); line-height: 1.2;
+}
+.spec-label {
+  font-size: 11px; color: var(--white-60);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.prop-cta {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 13px;
+  background: transparent;
+  border: 1px solid var(--red);
+  border-radius: 6px;
+  color: var(--red);
+  font-family: var(--font-body);
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
+  min-height: 48px;
+}
+.prop-cta:hover { background: var(--red); color: var(--white); }
+.props-more {
+  text-align: center; margin-top: 48px;
+}
+
+/* ── SERVICES ── */
+#servicios { background: var(--dark); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px;
+  margin-top: 64px;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.service-card {
+  background: var(--dark-2);
+  padding: 48px 40px;
+  transition: background 0.3s;
+  position: relative; overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+.service-card:hover { background: var(--dark-3); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-icon {
+  width: 52px; height: 52px;
+  background: var(--white-5);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  transition: background 0.3s, border-color 0.3s;
+}
+.service-card:hover .service-icon {
+  background: rgba(220,26,44,0.15);
+  border-color: rgba(220,26,44,0.3);
+}
+.service-icon svg { width: 24px; height: 24px; color: var(--gold); }
+.service-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 400;
+  margin-bottom: 12px;
+}
+.service-desc { font-size: 14px; color: var(--white-60); line-height: 1.7; }
+
+/* ── WHY REMAX ── */
+#porque { background: var(--black); }
+.porque-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.porque-visual {
+  position: relative;
+}
+.porque-globe {
+  width: 100%; max-width: 480px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(220,26,44,0.3), rgba(0,61,165,0.4), rgba(10,10,10,0.9));
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.porque-globe::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 29px, rgba(255,255,255,0.04) 30px),
+    repeating-linear-gradient(90deg, transparent, transparent 29px, rgba(255,255,255,0.04) 30px);
+  border-radius: 50%;
+}
+.porque-globe-text {
+  font-family: var(--font-bebas);
+  font-size: 100px; color: rgba(255,255,255,0.08);
+  position: absolute;
+  line-height: 1;
+}
+.porque-badge-float {
+  position: absolute;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.porque-badge-float.b1 { top: 10%; right: -20px; }
+.porque-badge-float.b2 { bottom: 15%; left: -20px; }
+.badge-float-num {
+  font-family: var(--font-bebas);
+  font-size: 36px; color: var(--red);
+  line-height: 1;
+}
+.badge-float-text { font-size: 12px; color: var(--white-60); }
+.porque-features {
+  display: flex; flex-direction: column; gap: 32px;
+  margin-top: 48px;
+}
+.feature-item {
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.feature-num {
+  font-family: var(--font-bebas);
+  font-size: 48px; color: var(--red);
+  line-height: 1; opacity: 0.4;
+  min-width: 40px;
+}
+.feature-title {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 400;
+  margin-bottom: 6px;
+}
+.feature-desc { font-size: 14px; color: var(--white-60); line-height: 1.7; }
+@media (max-width: 900px) {
+  .porque-inner { grid-template-columns: 1fr; }
+  .porque-visual { display: none; }
+}
+
+/* ── TESTIMONIOS ── */
+#testimonios { background: var(--dark); overflow: hidden; }
+.testimonios-track-wrap { overflow: hidden; margin-top: 64px; }
+.testimonios-track {
+  display: flex; gap: 24px;
+  animation: marquee-slow 40s linear infinite;
+  width: max-content;
+}
+.testimonios-track:hover { animation-play-state: paused; }
+@keyframes marquee-slow {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.testi-card {
+  background: var(--dark-2);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 32px;
+  width: 340px; flex-shrink: 0;
+  transition: border-color 0.3s;
+}
+.testi-card:hover { border-color: rgba(201,169,110,0.3); }
+.testi-stars { color: var(--gold); font-size: 18px; letter-spacing: 2px; margin-bottom: 16px; }
+.testi-text {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 300;
+  font-style: italic;
+  line-height: 1.6; color: var(--white-60);
+  margin-bottom: 24px;
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--navy));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  flex-shrink: 0;
+}
+.testi-name { font-size: 14px; font-weight: 600; }
+.testi-prop { font-size: 12px; color: var(--gold); margin-top: 2px; }
+
+/* ── FORM ── */
+#contacto {
+  background: linear-gradient(135deg, var(--dark) 0%, #0d0d1a 100%);
+  position: relative; overflow: hidden;
+}
+#contacto::before {
+  content: '';
+  position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(220,26,44,0.12), transparent 70%);
+  pointer-events: none;
+}
+.contact-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+  position: relative; z-index: 1;
+}
+.contact-form-wrap {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: clamp(32px, 5vw, 56px);
+  backdrop-filter: blur(20px);
+}
+.form-title {
+  font-family: var(--font-display);
+  font-size: 32px; font-weight: 300;
+  margin-bottom: 32px;
+}
+.form-title em { font-style: italic; color: var(--gold); }
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--white-60); margin-bottom: 8px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  min-height: 52px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255,255,255,0.4)' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+.form-group select option { background: var(--dark-2); color: var(--white); }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--gold);
+  background: rgba(201,169,110,0.05);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.btn-submit {
+  width: 100%;
+  padding: 18px;
+  background: var(--red);
+  color: var(--white);
+  border: none; border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 16px; font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  min-height: 56px;
+  margin-top: 8px;
+  position: relative; overflow: hidden;
+}
+.btn-submit::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.12));
+  opacity: 0; transition: opacity 0.2s;
+}
+.btn-submit:hover {
+  background: var(--red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(220,26,44,0.4);
+}
+.btn-submit:hover::after { opacity: 1; }
+.contact-trust {
+  display: flex; flex-direction: column; gap: 32px;
+}
+.trust-item {
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.trust-icon {
+  width: 52px; height: 52px; flex-shrink: 0;
+  background: rgba(220,26,44,0.1);
+  border: 1px solid rgba(220,26,44,0.2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.trust-icon svg { width: 24px; height: 24px; color: var(--red); }
+.trust-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.trust-desc { font-size: 14px; color: var(--white-60); line-height: 1.6; }
+.contact-whatsapp {
+  margin-top: 40px;
+  display: flex; align-items: center; gap: 16px;
+  background: rgba(37,211,102,0.1);
+  border: 1px solid rgba(37,211,102,0.2);
+  border-radius: 12px; padding: 20px 24px;
+  text-decoration: none; color: var(--white);
+  transition: background 0.2s;
+}
+.contact-whatsapp:hover { background: rgba(37,211,102,0.18); }
+.wa-icon { color: #25D366; flex-shrink: 0; }
+.wa-text-main { font-size: 15px; font-weight: 600; }
+.wa-text-sub { font-size: 13px; color: var(--white-60); margin-top: 2px; }
+@media (max-width: 900px) {
+  .contact-inner { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  border-top: 1px solid var(--glass-border);
+  padding: 64px clamp(24px, 6vw, 96px) 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-logo img { height: 40px; margin-bottom: 20px; filter: brightness(0) invert(1); }
+.footer-desc { font-size: 14px; color: var(--white-60); line-height: 1.7; max-width: 280px; }
+.footer-social {
+  display: flex; gap: 12px; margin-top: 24px;
+}
+.social-btn {
+  width: 40px; height: 40px;
+  background: var(--white-5);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; color: var(--white-60);
+  transition: 0.2s;
+}
+.social-btn:hover { background: var(--red); border-color: var(--red); color: var(--white); }
+.footer-col h4 {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--white); margin-bottom: 20px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a {
+  color: var(--white-60);
+  text-decoration: none; font-size: 14px;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-contact-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--white-60); font-size: 14px;
+  margin-bottom: 12px;
+}
+.footer-contact-item svg { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+.footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: var(--white-60); }
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ── MOBILE NAV MENU ── */
+#mobile-menu {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(10,10,10,0.98);
+  backdrop-filter: blur(20px);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px;
+}
+#mobile-menu.open { display: flex; }
+#mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 40px; font-weight: 300;
+  color: var(--white); text-decoration: none;
+  transition: color 0.2s;
+}
+#mobile-menu a:hover { color: var(--gold); }
+#mobile-menu-close {
+  position: absolute; top: 20px; right: 24px;
+  background: none; border: none;
+  color: var(--white); font-size: 32px;
+  cursor: pointer;
+}
+
+/* ── FORM SUCCESS ── */
+.form-success {
+  display: none;
+  text-align: center; padding: 48px 32px;
+}
+.form-success.show { display: block; }
+.success-icon {
+  width: 64px; height: 64px;
+  background: rgba(37,211,102,0.15);
+  border: 1px solid rgba(37,211,102,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+}
+.success-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 400; margin-bottom: 12px;
+}
+.success-text { color: var(--white-60); font-size: 15px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-logo">
+    <img src="https://images.squarespace-cdn.com/content/v1/6825f887c2f4a224e0bbe581/80b48e76-8699-43a1-99f9-7a1e53be1626/4.png" alt="RE/MAX PRO">
+  </div>
+  <div class="loader-percent" id="loader-num">0</div>
+  <div class="loader-line"><div class="loader-line-fill" id="loader-fill"></div></div>
+  <div class="loader-label">Cargando experiencia</div>
+</div>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Scroll progress -->
+<div id="progress-bar"></div>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <button id="mobile-menu-close" aria-label="Cerrar menú">&#x2715;</button>
+  <a href="#propiedades">Propiedades</a>
+  <a href="#servicios">Servicios</a>
+  <a href="#porque">Nosotros</a>
+  <a href="#contacto">Contacto</a>
+  <a href="https://wa.me/56994394228?text=Hola%2C%20me%20interesa%20una%20propiedad" class="btn-primary">WhatsApp</a>
+</div>
+
+<!-- Nav -->
+<nav id="navbar" role="navigation" aria-label="Navegación principal">
+  <a href="#" class="nav-logo" aria-label="RE/MAX PRO Vitacura - Inicio">
+    <img src="https://images.squarespace-cdn.com/content/v1/6825f887c2f4a224e0bbe581/80b48e76-8699-43a1-99f9-7a1e53be1626/4.png" alt="RE/MAX PRO Vitacura" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'font-family:var(--font-bebas);font-size:22px;letter-spacing:2px;color:#fff\'>RE/MAX <span style=\'color:#DC1A2C\'>PRO</span></span>'">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#propiedades">Propiedades</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#porque">Nosotros</a></li>
+    <li><a href="#contacto" class="nav-cta">Contactar</a></li>
+  </ul>
+  <button class="nav-hamburger" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section id="hero" aria-label="Hero principal">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge" id="hero-badge">
+      <div class="hero-badge-dot" aria-hidden="true"></div>
+      Vitacura · Santiago · Chile
+    </div>
+    <h1 class="hero-title">
+      <div class="line"><span>Tu próxima</span></div>
+      <div class="line"><span><em>propiedad</em></span></div>
+      <div class="line"><span>en Vitacura</span></div>
+    </h1>
+    <p class="hero-subtitle" id="hero-subtitle">
+      Red global, servicio local. Encontramos la propiedad ideal para ti con asesoría experta en compra, venta y arriendo.
+    </p>
+    <div class="hero-actions" id="hero-actions">
+      <a href="#propiedades" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ver Propiedades
+      </a>
+      <a href="https://wa.me/56994394228?text=Hola%2C%20me%20interesa%20una%20propiedad%20en%20Vitacura&utm_source=landing&utm_medium=hero&utm_campaign=whatsapp" class="btn-secondary" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Consultar por WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- Stats -->
+<div id="stats" aria-label="Estadísticas">
+  <div class="stats-inner">
+    <div class="stat-item reveal-up">
+      <div class="stat-num"><span class="count" data-target="500">0</span><span>+</span></div>
+      <div class="stat-label">Propiedades vendidas</div>
+    </div>
+    <div class="stat-item reveal-up">
+      <div class="stat-num"><span class="count" data-target="15">0</span><span> años</span></div>
+      <div class="stat-label">De experiencia</div>
+    </div>
+    <div class="stat-item reveal-up">
+      <div class="stat-num"><span class="count" data-target="1200">0</span><span>+</span></div>
+      <div class="stat-label">Clientes satisfechos</div>
+    </div>
+    <div class="stat-item reveal-up">
+      <div class="stat-num"><span>#</span><span class="count" data-target="1">0</span></div>
+      <div class="stat-label">En Vitacura</div>
+    </div>
+  </div>
+</div>
+
+<!-- Propiedades -->
+<section id="propiedades" aria-labelledby="props-heading">
+  <div class="props-header">
+    <div>
+      <div class="section-eyebrow reveal-up">Propiedades Destacadas</div>
+      <h2 class="section-title reveal-up" id="props-heading">
+        Encuentra tu <em>hogar ideal</em>
+      </h2>
+    </div>
+    <div class="props-filters" role="group" aria-label="Filtros de propiedades">
+      <button class="filter-btn active" data-filter="all" aria-pressed="true">Todas</button>
+      <button class="filter-btn" data-filter="venta" aria-pressed="false">Venta</button>
+      <button class="filter-btn" data-filter="arriendo" aria-pressed="false">Arriendo</button>
+      <button class="filter-btn" data-filter="casa" aria-pressed="false">Casas</button>
+      <button class="filter-btn" data-filter="depto" aria-pressed="false">Departamentos</button>
+    </div>
+  </div>
+  <div class="props-grid" id="props-grid" aria-live="polite">
+    <!-- Cards rendered by JS -->
+  </div>
+  <div class="props-more reveal-up">
+    <a href="https://wa.me/56994394228?text=Hola%2C%20me%20gustar%C3%ADa%20ver%20m%C3%A1s%20propiedades&utm_source=landing&utm_medium=props&utm_campaign=ver_mas" class="btn-secondary" target="_blank" rel="noopener">
+      Ver más propiedades
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- Servicios -->
+<section id="servicios" aria-labelledby="servicios-heading">
+  <div class="section-eyebrow reveal-up">Lo que hacemos</div>
+  <h2 class="section-title reveal-up" id="servicios-heading">
+    Servicios <em>integrales</em>
+  </h2>
+  <p class="section-subtitle reveal-up">Acompañamos cada etapa de tu decisión inmobiliaria con asesoría experta y trato personalizado.</p>
+  <div class="services-grid">
+    <div class="service-card reveal-up">
+      <div class="service-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3 class="service-title">Compra</h3>
+      <p class="service-desc">Te ayudamos a encontrar la propiedad perfecta según tu presupuesto y estilo de vida en Vitacura y Santiago.</p>
+    </div>
+    <div class="service-card reveal-up">
+      <div class="service-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3 class="service-title">Venta</h3>
+      <p class="service-desc">Maximizamos el valor de tu propiedad con estrategias de marketing digital y nuestra red de compradores activos.</p>
+    </div>
+    <div class="service-card reveal-up">
+      <div class="service-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h3 class="service-title">Arriendo</h3>
+      <p class="service-desc">Arrendamos tu propiedad rápidamente con inquilinos calificados o encontramos tu próximo hogar para arrendar.</p>
+    </div>
+    <div class="service-card reveal-up">
+      <div class="service-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3 class="service-title">Inversión</h3>
+      <p class="service-desc">Asesoría estratégica para invertir en bienes raíces con alto retorno. Rentabilidad y seguridad para tu capital.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Por qué RE/MAX PRO -->
+<section id="porque" aria-labelledby="porque-heading">
+  <div class="porque-inner">
+    <div class="porque-visual" aria-hidden="true">
+      <div class="porque-globe">
+        <div class="porque-globe-text">RE/MAX</div>
+      </div>
+      <div class="porque-badge-float b1">
+        <div class="badge-float-num">140+</div>
+        <div class="badge-float-text">Países con RE/MAX</div>
+      </div>
+      <div class="porque-badge-float b2">
+        <div class="badge-float-num">UF</div>
+        <div class="badge-float-text">Mejor precio garantizado</div>
+      </div>
+    </div>
+    <div>
+      <div class="section-eyebrow reveal-up">Por qué elegirnos</div>
+      <h2 class="section-title reveal-up" id="porque-heading">
+        Red global.<br><em>Servicio local.</em>
+      </h2>
+      <p class="section-subtitle reveal-up">Somos parte de la red inmobiliaria más grande del mundo, con presencia en más de 140 países y el respaldo de miles de agentes expertos.</p>
+      <div class="porque-features">
+        <div class="feature-item reveal-up">
+          <div class="feature-num" aria-hidden="true">01</div>
+          <div>
+            <div class="feature-title">Máxima exposición</div>
+            <p class="feature-desc">Tu propiedad o búsqueda llega a miles de compradores y propiedades a través de la red global RE/MAX.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal-up">
+          <div class="feature-num" aria-hidden="true">02</div>
+          <div>
+            <div class="feature-title">Agentes certificados</div>
+            <p class="feature-desc">Nuestro equipo cuenta con formación continua, certificaciones internacionales y conocimiento profundo del mercado de Vitacura.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal-up">
+          <div class="feature-num" aria-hidden="true">03</div>
+          <div>
+            <div class="feature-title">Proceso transparente</div>
+            <p class="feature-desc">Te acompañamos en cada paso: visitas, negociación, documentación y firma. Sin sorpresas ni costos ocultos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonios -->
+<section id="testimonios" aria-labelledby="testi-heading">
+  <div class="section-eyebrow reveal-up">Testimonios</div>
+  <h2 class="section-title reveal-up" id="testi-heading">
+    Lo que dicen <em>nuestros clientes</em>
+  </h2>
+  <div class="testimonios-track-wrap" aria-label="Carrusel de testimonios">
+    <div class="testimonios-track" id="testi-track">
+      <!-- duplicated by JS for infinite loop -->
+    </div>
+  </div>
+</section>
+
+<!-- Contacto -->
+<section id="contacto" aria-labelledby="contact-heading">
+  <div class="contact-inner">
+    <div>
+      <div class="section-eyebrow reveal-up">Contacto</div>
+      <h2 class="section-title reveal-up" id="contact-heading">
+        ¿Listo para<br>encontrar tu<br><em>propiedad ideal?</em>
+      </h2>
+      <p class="section-subtitle reveal-up">Nuestros agentes están disponibles para ayudarte a encontrar la mejor opción según tus necesidades y presupuesto.</p>
+      <div class="contact-trust reveal-up">
+        <div class="trust-item">
+          <div class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">+56 9 9439 4228</div>
+            <div class="trust-desc">Llámanos de lunes a sábado, 9:00 a 18:00 hrs.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">oficina@remax-pro.cl</div>
+            <div class="trust-desc">Respondemos en menos de 2 horas en días hábiles.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Francisco de Aguirre 3620, Vitacura</div>
+            <div class="trust-desc">Visítanos en nuestra oficina en Santiago.</div>
+          </div>
+        </div>
+      </div>
+      <a href="https://wa.me/56994394228?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20asesor%C3%ADa%20inmobiliaria&utm_source=landing&utm_medium=contact&utm_campaign=whatsapp" class="contact-whatsapp reveal-up" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+        <svg class="wa-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        <div>
+          <div class="wa-text-main">Chatear en WhatsApp</div>
+          <div class="wa-text-sub">Respuesta inmediata · +56 9 9439 4228</div>
+        </div>
+        <svg style="margin-left:auto;color:rgba(255,255,255,0.3)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="contact-form-wrap reveal-up">
+      <div id="form-content">
+        <div class="form-title">Escríbenos, te <em>contactamos hoy</em></div>
+        <form id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Nombre <span aria-hidden="true">*</span></label>
+              <input type="text" id="fname" name="nombre" placeholder="Tu nombre" required autocomplete="given-name" aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="fphone">Teléfono <span aria-hidden="true">*</span></label>
+              <input type="tel" id="fphone" name="telefono" placeholder="+56 9 XXXX XXXX" required autocomplete="tel" aria-required="true" inputmode="tel">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="femail">Email</label>
+            <input type="email" id="femail" name="email" placeholder="tu@email.com" autocomplete="email" inputmode="email">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ftype">Tipo de propiedad</label>
+              <select id="ftype" name="tipo">
+                <option value="">Seleccionar...</option>
+                <option value="casa">Casa</option>
+                <option value="departamento">Departamento</option>
+                <option value="oficina">Oficina</option>
+                <option value="terreno">Terreno</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fop">Operación</label>
+              <select id="fop" name="operacion">
+                <option value="">Seleccionar...</option>
+                <option value="compra">Comprar</option>
+                <option value="arriendo">Arrendar</option>
+                <option value="vender">Vender mi propiedad</option>
+                <option value="invertir">Invertir</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fbudget">Presupuesto aproximado</label>
+            <select id="fbudget" name="presupuesto">
+              <option value="">Seleccionar...</option>
+              <option value="hasta-3000">Hasta 3.000 UF</option>
+              <option value="3000-6000">3.000 – 6.000 UF</option>
+              <option value="6000-10000">6.000 – 10.000 UF</option>
+              <option value="10000-20000">10.000 – 20.000 UF</option>
+              <option value="mas-20000">Más de 20.000 UF</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit" id="form-submit">
+            Quiero que me contacten
+          </button>
+        </form>
+      </div>
+      <div class="form-success" id="form-success" role="alert" aria-live="polite">
+        <div class="success-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="success-title">¡Mensaje enviado!</div>
+        <p class="success-text">Uno de nuestros agentes te contactará en las próximas horas. También puedes escribirnos directamente por WhatsApp para atención inmediata.</p>
+        <br>
+        <a href="https://wa.me/56994394228?text=Hola%2C%20acabo%20de%20llenar%20el%20formulario&utm_source=landing&utm_medium=form-success&utm_campaign=whatsapp" class="btn-primary" style="margin-top:16px;display:inline-flex" target="_blank" rel="noopener">Ir al WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a href="#" class="footer-logo" aria-label="RE/MAX PRO Vitacura">
+        <img src="https://images.squarespace-cdn.com/content/v1/6825f887c2f4a224e0bbe581/80b48e76-8699-43a1-99f9-7a1e53be1626/4.png" alt="RE/MAX PRO Vitacura" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-family:var(--font-bebas);font-size:24px;letter-spacing:2px">RE/MAX <span style="color:#DC1A2C">PRO</span> VITACURA</span>
+      </a>
+      <p class="footer-desc">Somos la oficina RE/MAX líder en Vitacura. Especialistas en propiedades de alto estándar con atención personalizada y presencia global.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/gestiones_inmobiliarias_pro" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://facebook.com" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/56994394228" class="social-btn" aria-label="WhatsApp" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a10.66 10.66 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Propiedades</h4>
+      <ul class="footer-links">
+        <li><a href="#propiedades">Casas en venta</a></li>
+        <li><a href="#propiedades">Departamentos</a></li>
+        <li><a href="#propiedades">Oficinas</a></li>
+        <li><a href="#propiedades">Terrenos</a></li>
+        <li><a href="#propiedades">Arriendos</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul class="footer-links">
+        <li><a href="#servicios">Compra</a></li>
+        <li><a href="#servicios">Venta</a></li>
+        <li><a href="#servicios">Arriendo</a></li>
+        <li><a href="#servicios">Inversión</a></li>
+        <li><a href="#servicios">Administración</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <div class="footer-contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Francisco de Aguirre 3620, Vitacura
+      </div>
+      <div class="footer-contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +56 9 9439 4228
+      </div>
+      <div class="footer-contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        oficina@remax-pro.cl
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2026 RE/MAX PRO Vitacura. Todos los derechos reservados.</p>
+    <div class="footer-legal">
+      <a href="#">Política de privacidad</a>
+      <a href="#">Términos de uso</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── DATA ──
+const PROPERTIES = [
+  { id:1, name:'Casa moderna en Lo Curro', location:'Lo Curro, Vitacura', type:'casa', op:'venta', uf:18500, m2:320, hab:4, banos:3, badge:'exc', img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80', desc:'Amplia casa con piscina, jardín y vistas panorámicas.' },
+  { id:2, name:'Departamento La Dehesa', location:'Las Condes', type:'depto', op:'venta', uf:8200, m2:112, hab:3, banos:2, badge:'new', img:'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80', desc:'Moderno departamento en edificio con amenities.' },
+  { id:3, name:'Casa Sector El Golf', location:'Las Condes', type:'casa', op:'arriendo', uf:120, m2:280, hab:5, banos:4, badge:'op', img:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80', desc:'Casa en condominio privado, estilo contemporáneo.' },
+  { id:4, name:'Departamento Vitacura Tower', location:'Vitacura', type:'depto', op:'venta', uf:11000, m2:150, hab:3, banos:2, badge:'new', img:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80', desc:'Piso alto con terraza y vista despejada a la cordillera.' },
+  { id:5, name:'Oficina Apoquindo', location:'Las Condes', type:'oficina', op:'arriendo', uf:80, m2:95, hab:0, banos:2, badge:null, img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80', desc:'Oficina clase A, piso 12, estacionamientos incluidos.' },
+  { id:6, name:'Casa en Condominio Chicureo', location:'Colina', type:'casa', op:'venta', uf:6800, m2:200, hab:4, banos:3, badge:'op', img:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80', desc:'Condominio cerrado con seguridad 24/7 y áreas verdes.' },
+  { id:7, name:'Penthouse Providencia', location:'Providencia', type:'depto', op:'venta', uf:15000, m2:200, hab:4, banos:3, badge:'exc', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80', desc:'Penthouse de lujo con terraza de 80m² y jacuzzi.' },
+  { id:8, name:'Casa Familiar Nueva La Florida', location:'La Florida', type:'casa', op:'arriendo', uf:65, m2:160, hab:4, banos:2, badge:'new', img:'https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80', desc:'Casa familiar recién remodelada, cerca de colegios.' },
+];
+
+const TESTIMONIALS = [
+  { ini:'MP', name:'María Paz R.', prop:'Vendió su casa en Las Condes', text:'Excelente servicio. Vendieron mi propiedad en menos de 3 semanas al precio que pedí. Muy profesionales.', rating:5 },
+  { ini:'CF', name:'Carlos F.', prop:'Compró departamento en Vitacura', text:'El equipo me guió en todo el proceso. Encontraron exactamente lo que buscaba dentro de mi presupuesto.', rating:5 },
+  { ini:'AS', name:'Andrea S.', prop:'Arrendó oficina en Las Condes', text:'Rápidos, eficientes y muy atentos. La mejor experiencia inmobiliaria que he tenido en Chile.', rating:5 },
+  { ini:'RV', name:'Roberto V.', prop:'Invirtió en departamento', text:'Gracias a su asesoría de inversión obtuve una rentabilidad del 8% anual. Totalmente recomendados.', rating:5 },
+  { ini:'LM', name:'Luisa M.', prop:'Compró casa en Colina', text:'Increíble atención personalizada. Nos acompañaron en cada paso hasta la firma ante notario.', rating:5 },
+  { ini:'JP', name:'Jorge P.', prop:'Vendió terreno en Vitacura', text:'Vendieron mi terreno en 45 días con múltiples ofertas. Su red de contactos es impresionante.', rating:5 },
+];
+
+// ── HELPERS ──
+const fmt = n => n >= 1000 ? (n/1000).toFixed(1).replace('.0','') + ' mil' : n;
+const badgeMap = { new: { cls:'badge-new', txt:'Nuevo' }, op: { cls:'badge-op', txt:'Oportunidad' }, exc: { cls:'badge-exc', txt:'Exclusivo' } };
+const opLabel = { venta:'Venta', arriendo:'Arriendo' };
+
+function buildCard(p) {
+  const badge = p.badge ? `<span class="prop-badge ${badgeMap[p.badge].cls}">${badgeMap[p.badge].txt}</span>` : '';
+  const specsHab = p.hab > 0 ? `<div class="spec"><div class="spec-val">${p.hab}</div><div class="spec-label">Hab.</div></div>` : '';
+  const priceLabel = p.op === 'arriendo' ? `UF ${p.uf}/mes` : `UF ${p.uf.toLocaleString('es-CL')}`;
+  const waMsg = encodeURIComponent(`Hola, me interesa la propiedad: ${p.name} (${priceLabel}) en ${p.location}`);
+  return `<article class="prop-card" data-type="${p.type}" data-op="${p.op}">
+    <div class="prop-img-wrap">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" width="600" height="400">
+      ${badge}
+      <span class="prop-type-badge">${opLabel[p.op]}</span>
+    </div>
+    <div class="prop-body">
+      <div class="prop-price">${priceLabel.replace('UF ','')}<span> UF</span></div>
+      <div class="prop-name">${p.name}</div>
+      <div class="prop-location">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${p.location}
+      </div>
+      <div class="prop-specs">
+        ${specsHab}
+        <div class="spec"><div class="spec-val">${p.banos}</div><div class="spec-label">Baños</div></div>
+        <div class="spec"><div class="spec-val">${p.m2}</div><div class="spec-label">m²</div></div>
+      </div>
+      <a href="https://wa.me/56994394228?text=${waMsg}&utm_source=landing&utm_medium=card&utm_campaign=prop_${p.id}" class="prop-cta" target="_blank" rel="noopener" aria-label="Consultar por ${p.name} en WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Consultar propiedad
+      </a>
+    </div>
+  </article>`;
+}
+
+function buildTesti(t) {
+  return `<div class="testi-card">
+    <div class="testi-stars" aria-label="${t.rating} de 5 estrellas">${'★'.repeat(t.rating)}</div>
+    <p class="testi-text">"${t.text}"</p>
+    <div class="testi-author">
+      <div class="testi-avatar" aria-hidden="true">${t.ini}</div>
+      <div>
+        <div class="testi-name">${t.name}</div>
+        <div class="testi-prop">${t.prop}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Render properties
+const grid = document.getElementById('props-grid');
+grid.innerHTML = PROPERTIES.map(buildCard).join('');
+
+// Render testimonials (duplicated for infinite scroll)
+const track = document.getElementById('testi-track');
+const testiHTML = TESTIMONIALS.map(buildTesti).join('');
+track.innerHTML = testiHTML + testiHTML;
+
+// ── FILTERS ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+    btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.prop-card').forEach(card => {
+      const show = f === 'all' || card.dataset.type === f || card.dataset.op === f;
+      card.style.display = show ? '' : 'none';
+    });
+  });
+});
+
+// ── THREE.JS HERO ──
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 5;
+
+  // Particles
+  const count = 2000;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const colorOptions = [
+    new THREE.Color('#C9A96E'), new THREE.Color('#DC1A2C'),
+    new THREE.Color('#003DA5'), new THREE.Color('#ffffff')
+  ];
+  for (let i = 0; i < count; i++) {
+    pos[i*3]   = (Math.random()-0.5)*20;
+    pos[i*3+1] = (Math.random()-0.5)*20;
+    pos[i*3+2] = (Math.random()-0.5)*20;
+    const c = colorOptions[Math.floor(Math.random()*colorOptions.length)];
+    colors[i*3]   = c.r;
+    colors[i*3+1] = c.g;
+    colors[i*3+2] = c.b;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  const mat = new THREE.PointsMaterial({ size: 0.04, vertexColors: true, transparent: true, opacity: 0.7 });
+  const points = new THREE.Points(geo, mat);
+  scene.add(points);
+
+  // Floating wireframe sphere
+  const sGeo = new THREE.IcosahedronGeometry(1.8, 1);
+  const sMat = new THREE.MeshBasicMaterial({ color: 0x003DA5, wireframe: true, transparent: true, opacity: 0.08 });
+  const sphere = new THREE.Mesh(sGeo, sMat);
+  sphere.position.set(3, 0, -2);
+  scene.add(sphere);
+
+  let mx = 0, my = 0;
+  window.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth - 0.5) * 0.3;
+    my = (e.clientY / window.innerHeight - 0.5) * 0.2;
+  });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  let frame = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    frame += 0.002;
+    points.rotation.y = frame * 0.15 + mx;
+    points.rotation.x = frame * 0.05 + my;
+    sphere.rotation.y += 0.003;
+    sphere.rotation.x += 0.001;
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ── LENIS SMOOTH SCROLL ──
+let lenis;
+try {
+  lenis = new Lenis({ duration: 1.4, easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t)), smoothWheel: true });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+} catch(e) {}
+
+// ── GSAP ──
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero animations (after loader)
+function runHeroAnim() {
+  const tl = gsap.timeline({ delay: 0.2 });
+  tl.to('#hero-badge', { opacity:1, y:0, duration:0.7, ease:'power3.out' })
+    .to('.hero-title .line span', { y:'0%', duration:1, stagger:0.12, ease:'power4.out' }, '-=0.3')
+    .to('#hero-subtitle', { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.4')
+    .to('#hero-actions', { opacity:1, y:0, duration:0.7, ease:'power3.out' }, '-=0.3');
+}
+
+// Scroll reveal
+gsap.utils.toArray('.reveal-up').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+  });
+});
+
+// Counter animation
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  gsap.to({ val: 0 }, {
+    val: target, duration: 2.2, ease: 'power2.out',
+    onUpdate: function() { el.textContent = Math.floor(this.targets()[0].val).toLocaleString('es-CL'); }
+  });
+}
+document.querySelectorAll('.count').forEach(el => {
+  ScrollTrigger.create({
+    trigger: el, start: 'top 90%', once: true,
+    onEnter: () => animateCounter(el)
+  });
+});
+
+// ── LOADER ──
+(function() {
+  const loader = document.getElementById('loader');
+  const numEl = document.getElementById('loader-num');
+  const fill = document.getElementById('loader-fill');
+  const logo = document.querySelector('.loader-logo');
+
+  gsap.to(logo, { opacity:1, y:0, duration:0.8, delay:0.2, ease:'power3.out' });
+
+  let progress = 0;
+  const iv = setInterval(() => {
+    progress += Math.random() * 18;
+    if (progress >= 100) { progress = 100; clearInterval(iv); finish(); }
+    numEl.textContent = Math.floor(progress);
+    fill.style.width = progress + '%';
+  }, 80);
+
+  function finish() {
+    setTimeout(() => {
+      gsap.to(loader, {
+        clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'power4.inOut',
+        onComplete: () => { loader.style.display = 'none'; runHeroAnim(); }
+      });
+    }, 300);
+  }
+})();
+
+// ── CURSOR ──
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+window.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+function cursorLoop() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  if (cur) { cur.style.left = cx+'px'; cur.style.top = cy+'px'; }
+  if (ring) { ring.style.left = rx+'px'; ring.style.top = ry+'px'; }
+  requestAnimationFrame(cursorLoop);
+}
+cursorLoop();
+
+// ── NAV SCROLL ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}, { passive: true });
+
+// ── MOBILE MENU ──
+const toggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+const closeBtn = document.getElementById('mobile-menu-close');
+toggle.addEventListener('click', () => {
+  mobileMenu.classList.add('open');
+  toggle.setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden';
+});
+closeBtn.addEventListener('click', () => {
+  mobileMenu.classList.remove('open');
+  toggle.setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  });
+});
+
+// ── CARD 3D TILT ──
+document.querySelectorAll('.prop-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*8}deg) translateZ(8px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// ── FORM SUBMIT ──
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('form-submit');
+  const fname = document.getElementById('fname').value.trim();
+  const fphone = document.getElementById('fphone').value.trim();
+  if (!fname || !fphone) {
+    if (!fname) { document.getElementById('fname').focus(); return; }
+    if (!fphone) { document.getElementById('fphone').focus(); return; }
+  }
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  // Simulate send + fire conversion event
+  setTimeout(() => {
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+  }, 1200);
+});
+
+// Smooth anchor scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+      else target.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
