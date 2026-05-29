@@ -905,6 +905,111 @@ footer {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── LIGHT THEME ── */
+:root {
+  --black: #FAFAF8;
+  --dark: #F0EDE8;
+  --dark-2: #E8E4DC;
+  --dark-3: #DEDBD4;
+  --white-5: rgba(0,0,0,0.04);
+  --white-10: rgba(0,0,0,0.06);
+  --glass: rgba(255,255,255,0.85);
+  --glass-border: rgba(0,0,0,0.1);
+}
+body { color: #0A0A0A; }
+
+/* Loader permanece oscuro */
+#loader { background: #0A0A0A; }
+.loader-percent { color: #FFFFFF; }
+.loader-label { color: rgba(255,255,255,0.6); }
+
+/* Nav: transparente sobre hero (oscuro) → ok. Scrolled: blanco + texto oscuro */
+nav.scrolled { background: rgba(255,255,255,0.96); border-bottom-color: rgba(0,0,0,0.08); }
+nav.scrolled .nav-links a { color: rgba(10,10,10,0.6); }
+nav.scrolled .nav-links a:hover { color: #0A0A0A; }
+nav.scrolled .nav-hamburger span { background: #0A0A0A; }
+
+/* Hero: canvas oscuro → mantener texto blanco */
+.hero-title { color: #FFFFFF; }
+.hero-subtitle { color: rgba(255,255,255,0.7) !important; }
+.hero-scroll span { color: rgba(255,255,255,0.6); }
+
+/* Stats */
+.stat-num { color: #0A0A0A; }
+.stat-label { color: rgba(10,10,10,0.55); }
+
+/* Secciones comunes */
+.section-title { color: #0A0A0A; }
+.section-subtitle { color: rgba(10,10,10,0.55); }
+
+/* Propiedades */
+.prop-card { background: #FFFFFF; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+.prop-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.12), 0 0 0 1px rgba(201,169,110,0.25); }
+.prop-price { color: #0A0A0A; }
+.prop-price span { color: rgba(10,10,10,0.5); }
+.prop-name { color: #0A0A0A; }
+.spec-val { color: #0A0A0A; }
+.spec-label { color: rgba(10,10,10,0.5); }
+.filter-btn { color: rgba(10,10,10,0.6); border-color: rgba(0,0,0,0.15); }
+.prop-type-badge { background: rgba(255,255,255,0.9); color: rgba(10,10,10,0.6); border-color: rgba(0,0,0,0.1); }
+
+/* Servicios */
+.service-card { background: #FFFFFF; }
+.service-card:hover { background: #F5F2EE; }
+.service-title { color: #0A0A0A; }
+.service-desc { color: rgba(10,10,10,0.55); }
+.service-icon { border-color: rgba(0,0,0,0.1); }
+
+/* Por qué RE/MAX */
+.feature-title { color: #0A0A0A; }
+.feature-desc { color: rgba(10,10,10,0.55); }
+.badge-float-text { color: rgba(10,10,10,0.6); }
+.porque-badge-float { background: rgba(255,255,255,0.92); border-color: rgba(0,0,0,0.1); }
+
+/* Testimonios */
+.testi-card { background: #FFFFFF; border-color: rgba(0,0,0,0.08); }
+.testi-card:hover { border-color: rgba(201,169,110,0.4); }
+.testi-text { color: rgba(10,10,10,0.65) !important; }
+.testi-name { color: #0A0A0A; }
+
+/* Formulario */
+#contacto { background: var(--dark); }
+#contacto::before { background: radial-gradient(circle, rgba(220,26,44,0.07), transparent 70%); }
+.contact-form-wrap { background: #FFFFFF; border-color: rgba(0,0,0,0.1); }
+.form-title { color: #0A0A0A; }
+.form-group label { color: rgba(10,10,10,0.6); }
+.form-group input,
+.form-group select,
+.form-group textarea { background: #F5F2EE; border-color: rgba(0,0,0,0.12); color: #0A0A0A; }
+.form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(0,0,0,0.4)' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-color: #F5F2EE; }
+.form-group select option { background: #FFFFFF; color: #0A0A0A; }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(10,10,10,0.3); }
+.trust-title { color: #0A0A0A; }
+.trust-desc { color: rgba(10,10,10,0.55); }
+.contact-whatsapp { color: #0A0A0A; }
+.wa-text-sub { color: rgba(10,10,10,0.55) !important; }
+.success-title { color: #0A0A0A; }
+.success-text { color: rgba(10,10,10,0.55) !important; }
+
+/* Footer permanece oscuro */
+footer { background: #0A0A0A; }
+.footer-desc { color: rgba(255,255,255,0.6) !important; }
+.footer-col h4 { color: #FFFFFF !important; }
+.footer-links a { color: rgba(255,255,255,0.6) !important; }
+.footer-links a:hover { color: var(--gold) !important; }
+.footer-contact-item { color: rgba(255,255,255,0.6) !important; }
+.footer-copy { color: rgba(255,255,255,0.3) !important; }
+.footer-legal a { color: rgba(255,255,255,0.3) !important; }
+.footer-legal a:hover { color: rgba(255,255,255,0.6) !important; }
+.social-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
+.footer-bottom { border-top-color: rgba(255,255,255,0.1) !important; }
+
+/* Menú mobile permanece oscuro */
+#mobile-menu { background: rgba(10,10,10,0.98) !important; }
+#mobile-menu a { color: #FFFFFF !important; }
+#mobile-menu-close { color: #FFFFFF !important; }
 </style>
 </head>
 <body>
